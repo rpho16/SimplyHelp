@@ -1,0 +1,84 @@
+﻿@model SimplyHelp.Models.ViewModel.SubscriptionViewModel
+
+@{
+    ViewData["Title"] = "Add";
+}
+
+
+<h3>Subscription</h3>
+<hr />
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="Add">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group col-md-6">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" type="tel" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                @*<select asp-for="Carrier" asp-items="Model.Carriers"></select>*@
+                @*@Html.DropDownList("Carrier")*@
+            </div>
+            <div class="form-group col-md-8">
+                <label asp-for="EmailAddress" class="control-label"></label>
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Address1" class="control-label"></label>
+                <input asp-for="Address1" class="form-control" id="address1" />
+                <span asp-validation-for="Address1" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Address2" class="control-label"></label>
+                <input asp-for="Address2" class="form-control" />
+                <span asp-validation-for="Address2" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="ZipCode" class="control-label"></label>
+                <input asp-for="ZipCode" class="form-control" pattern="[0-9]*" id="zip" maxlength="5" />
+                <span asp-validation-for="ZipCode" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" id="city" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="State" class="control-label"></label>
+                <input asp-for="State" class="form-control" id="state" />
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="County" class="control-label"></label>
+                <input asp-for="County" class="form-control" id="county" />
+                <span asp-validation-for="County" class="text-danger"></span>
+            </div>
+            <div class="fancy-form">
+                <p class="zip-error">Not a real zip code.</p>
+            </div>
+            <div class="form-group col-md-12">
+                <!--Use for create checkboxes-->
+                @Html.EditorFor(m => m.AuthorizeContact)
+                <label>By CLicking here, you authorize to send you either a message or email notifying you about a catastrophe </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Home" asp-action="Index">Back to Home</a>
+</div>
+

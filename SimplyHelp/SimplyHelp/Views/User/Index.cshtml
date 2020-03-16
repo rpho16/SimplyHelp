@@ -1,0 +1,153 @@
+﻿@model SimplyHelp.Models.ViewModel.GeoLocation
+@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = "Index";
+
+    var userId = Context.Session.GetString("userId");
+    var userName = Context.Session.GetString("userName");
+    //var userRole = Context.Session.GetString("userRole");
+    List<SimplyHelp.Models.TableViewModel.MembersTableViewModel> lstMembersAll = null;
+    List<SimplyHelp.Models.ViewModel.PlacesGeoModel> lstPlacesLoc = null;
+
+    if (ViewBag.ListMemb == null)
+    {
+        ViewBag.ShowList = false;
+    }
+    else
+    {
+        ViewBag.ShowList = true;
+        lstMembersAll = ViewBag.ListMemb;
+        lstPlacesLoc = ViewBag.ListLocation;
+    }
+}
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<br />
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="col-md-4 col-sm-4 col-xs-4">
+            <h4>User Name: @userName</h4>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4">
+            <input type="submit" value="Add Members" class="btn btn-primary" data-toggle="modal" data-target="#modalMembers" />
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4">
+            <input type="submit" id="sendLoc" value="Save Geolocation" class="btn btn-toolbar btn-danger" onclick="geoFindMe(@userId)"
+                   data-send-loc="@Url.Content("~/User/Add")" data-back-index="@Url.Content("~/User/")" />
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-12 col-sm-12">
+            <div class="table-responsive col-md-12 divwdBigger">
+                @if (ViewBag.ShowList)
+                {
+                    <table class="table table-bordered table-striped table-hover table-condensed">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Full Name</th>
+                                <th scope="col">Phone Number</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Zip Code</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var oElement in lstMembersAll)
+                            {
+                                <tr>
+                                    <td>@oElement.Fullname</td>
+                                    <td>@oElement.PhoneNumber</td>
+                                    <td>@oElement.Email</td>
+                                    <td>@oElement.ZipCode</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+        <div class="col-md-12 col-sm-12 col-md-offset-4 col-sm-offset-3 col-xs-offset-1">
+            <div id="map" style="height:350px; width:350px;"
+                 data-map-url="@Url.Content("~/User/GetMembersLoc")"
+                 data-send-loc="@Url.Content("~/User/AddPlaces/")"
+                 data-redir-page="@Url.Content("~/User/")"
+                 data-user-id="@userId"></div>
+        </div>
+        <div id="myList"></div>
+        <div class="col-md-12 col-sm-12">
+            <p class="col-md-offset-3"><span class="pLabel">Emergency Places near you</span></p>
+            <div class="table-responsive col-md-12">
+                @if (ViewBag.ShowList)
+                {
+                    <table id="perPage" class="table table-bordered table-striped table-hover table-condensed">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Place Name</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Type</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var oElement in lstPlacesLoc)
+                            {
+                                <tr>
+                                    <td>@oElement.PlaceName</td>
+                                    <td>@oElement.PlaceVicinity</td>
+                                    <td>@oElement.PlaceType</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+    <p id="output"></p>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalMembers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <partial name="UserMembers">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<button id="find-me">Show my location</button>*@
+
+<p id="status"></p>
+@*<a id="map-link" target="_blank"></a>*@
+
+
+@*<button id="reset">Reset</button>*@
+@*<div id="counter"></div>*@
+
+@section Scripts{
+    <script src="~/js/site.js"></script>
+    <!--Maps-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOURKEY&callback=initMap&libraries=places"
+            async defer></script>
+}
+<script>
+    window.onload = function () {
+        GetLoc(@userId, "@Url.Content("~/User/Add")", "@Url.Content("~/User/")");
+        GetLastLocMember("@userName", "@Url.Content("~/User/Edit")", "@Url.Content("~/User/")");
+        tablePerPage();
+    }
+</script>
+

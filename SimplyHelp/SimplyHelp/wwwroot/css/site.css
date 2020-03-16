@@ -1,0 +1,118 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification\ 
+for details on configuring this project to bundle and minify static web assets. */
+html, body {
+    margin: 0;
+    padding: 0;
+    /*overflow: hidden;*/
+}
+
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-color: #e6e6e6;
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+    width: 100%;
+}
+/*table wrapping*/
+td {
+    white-space: normal !important;
+    word-wrap: break-word;
+}
+/*First table width */
+.divwdBigger {
+    width: 100%;
+}
+
+/*table th:nth-child(3), td:nth-child(3) {
+    display: none;
+}*/
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+/*Color to zip error*/
+.zip-error {
+    color: #d70000;
+    font: 12px "Lucida Sans Unicode", "Lucida Grande", sans-serif;    
+    border-bottom: 2px dotted #ec9696;
+    text-align: center;
+    padding: 5px 10px;
+    margin-top: 10px;
+    display: none;
+}
+.size-img-card{
+    width: 50px;
+    height: 500px;
+}
+.card-text-align{
+    text-align: justify;
+    color: red;
+}
+
+/* Map for locating leafletjs*/
+#mapid {
+    height: 180px;
+}
+#map {
+    height: 100%;
+}
+/*Term of Use*/
+h3 {
+    font-weight: bold;
+}
+h1 {
+    background-color: #8080ff;
+    font-weight: bold;
+    margin-top: 80px;
+    margin-bottom: 50px;
+    margin-right: none;
+    margin-left: none;
+    text-align: center;
+    padding-left: 30px;
+    font-size: 40pt;
+}
+.index-Message {
+    display: block; 
+    background-color: white; 
+    margin-top:50px; 
+    margin-left: 50px; 
+    margin-right: 50px; 
+    text-align: center; 
+    border-radius: 15px 50px; 
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);    
+}
+.pLabel{
+    font-weight:700;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size:32px;
+    text-transform: capitalize;
+    color:orangered;
+}

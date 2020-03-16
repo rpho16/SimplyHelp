@@ -1,0 +1,6 @@
+1. Install packages
+- Microsoft.EntityFrameworkCore.SqlServer
+- Microsoft.EntityFrameworkCore.Tools
+2.
+//To create a Connection from the .NetCore EntityFrameworkCore to my local database
+Scaffold-DBContext "Server=localhost;Database=SimplyHelp;Trusted_Connection=true;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -force
