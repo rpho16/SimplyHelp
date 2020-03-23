@@ -9,13 +9,14 @@ namespace SimplyHelp.Models
         public SimplyHelpContext()
         {
         }
-
         public SimplyHelpContext(DbContextOptions<SimplyHelpContext> options)
             : base(options)
         {
         }
-
+        public virtual DbSet<AlertMessage> AlertMessage { get; set; }
+        public virtual DbSet<AlertType> AlertType { get; set; }
         public virtual DbSet<Carrier> Carrier { get; set; }
+        public virtual DbSet<Disaster> Disaster { get; set; }
         public virtual DbSet<Permissions> Permissions { get; set; }
         public virtual DbSet<PlacesGeo> PlacesGeo { get; set; }
         public virtual DbSet<Role> Role { get; set; }
@@ -26,17 +27,48 @@ namespace SimplyHelp.Models
         public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=localhost;Database=SimplyHelp;Trusted_Connection=true;");
-            }
+        {            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
+
+            modelBuilder.Entity<AlertMessage>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.AlertMessageName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IdAlertType).HasColumnName("id_AlertType");
+
+                entity.HasOne(d => d.IdAlertTypeNavigation)
+                    .WithMany(p => p.AlertMessage)
+                    .HasForeignKey(d => d.IdAlertType)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_AlertMessage_AlertType");
+            });
+
+            modelBuilder.Entity<AlertType>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.AlertTypeName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IdDisaster).HasColumnName("id_Disaster");
+
+                entity.HasOne(d => d.IdDisasterNavigation)
+                    .WithMany(p => p.AlertType)
+                    .HasForeignKey(d => d.IdDisaster)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_AlertType_Disaster");
+            });
 
             modelBuilder.Entity<Carrier>(entity =>
             {
@@ -51,6 +83,14 @@ namespace SimplyHelp.Models
                 entity.Property(e => e.CarrierName)
                     .IsRequired()
                     .HasColumnName("carrier_Name")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Disaster>(entity =>
+            {
+                entity.Property(e => e.DisasterName)
+                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });

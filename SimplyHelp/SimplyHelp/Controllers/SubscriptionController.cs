@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SimplyHelp.Models;
 using SimplyHelp.Models.ViewModel;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 //Twilio
 using Twilio;
 using Twilio.Types;
@@ -14,6 +16,19 @@ namespace SimplyHelp.Controllers
 {
     public class SubscriptionController : Controller
     {
+        // requires using Microsoft.Extensions.Configuration;
+        private readonly IConfiguration Configuration;
+        private readonly SimplyHelpContext _context;
+
+        [BindProperty]
+        public TblSubscription Subscription { get; set; }
+
+        public SubscriptionController(SimplyHelpContext context, IConfiguration configuration)
+        {
+            _context = context;
+            Configuration = configuration;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -26,7 +41,7 @@ namespace SimplyHelp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(SubscriptionViewModel model)
+        public IActionResult Add(TblSubscription model)
         {
             ViewData["Message"] = "Your registration page!.";
 
@@ -42,37 +57,22 @@ namespace SimplyHelp.Controllers
                 return View(model);
             }
 
-            using (Models.SimplyHelpContext db = new Models.SimplyHelpContext())
-            {
-                Models.TblSubscription oSubscription = new Models.TblSubscription();
-                oSubscription.FirstName = model.FirstName;
-                oSubscription.LastName = model.LastName;
-                oSubscription.Address1 = model.Address1;
-                oSubscription.Address2 = model.Address2;
-                oSubscription.City = model.City;
-                oSubscription.State = model.State;
-                oSubscription.ZipCode = model.ZipCode;
-                oSubscription.County = model.County;
-                oSubscription.EmailAddress = model.EmailAddress;
-                oSubscription.PhoneNumber = model.PhoneNumber;
-                oSubscription.AuthorizeContact = model.AuthorizeContact;
+            Subscription = new TblSubscription();
+            _context.TblSubscription.Add(model);
+            _context.SaveChanges();
 
-                db.TblSubscription.Add(oSubscription);
-                db.SaveChanges();                
-            }
             try
             {
-                // Find your Account Sid and Auth Token at twilio.com/user/account
-                const string acctSid = "";
-                const string authT = "";
-                var accountSid = acctSid;
-                var authToken = authT;
-                TwilioClient.Init(accountSid, authToken);
+                // Find your Account Sid and Auth Token at twilio.com/user/account   
+                var acctSid = Configuration["Twilio:AccountSid"];
+                var authT = Configuration["Twilio:AuthToken"];
+                
+                TwilioClient.Init(acctSid, authT);
 
                 var to = new PhoneNumber("+1" + model.PhoneNumber);
                 var message = MessageResource.Create(
                     to,
-                    from: new PhoneNumber("+12064324427"), //  From number, must be an SMS-enabled Twilio number ( This will send sms from ur "To" numbers ).  
+                    from: new PhoneNumber(Configuration["Twilio:ToNumber"]), //  From number, must be an SMS-enabled Twilio number ( This will send sms from ur "To" numbers ).  
                     body: $"Hello {model.FirstName} {model.LastName} Thanks for subscribing with Us. More info please go to URL");
                 
                 ViewBag.SuccessMessage = "Registered Successfully !!";

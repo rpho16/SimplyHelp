@@ -12,17 +12,18 @@ using Microsoft.Extensions.DependencyInjection;
 using SimplyHelp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+//
+using Twilio.Clients;
 
 namespace SimplyHelp
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -50,10 +51,9 @@ namespace SimplyHelp
                     });
             });
 
+            services.AddAntiforgery(x => x.HeaderName = "X-ANTI-FORGERY-TOKEN");
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);            
 
             services.AddDbContext<SimplyHelpContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));

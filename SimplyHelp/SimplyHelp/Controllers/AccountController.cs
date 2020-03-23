@@ -13,8 +13,7 @@ namespace SimplyHelp.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SimplyHelpContext _context;
-
+        private readonly SimplyHelpContext _context;     
         public AccountController(SimplyHelpContext context)
         {
             _context = context;
@@ -32,12 +31,13 @@ namespace SimplyHelp.Controllers
             if (ModelState.IsValid)
             {
                 var userdetails = await _context.Users
-                    .SingleOrDefaultAsync(m => m.Email == model.Email && m.Password == model.Password);     // && m.IdRole == 3
+                    .SingleOrDefaultAsync(m => m.Email == model.Email && m.Password == model.Password);
                 if (userdetails == null)
                 {
                     ModelState.AddModelError("Password", "Invalid login attempt.");
                     return View("Index");
                 }
+
                 HttpContext.Session.SetString("userName", userdetails.FullName);
                 HttpContext.Session.SetString("userId", userdetails.Id.ToString());
                 HttpContext.Session.SetString("userRole", userdetails.IdRole.ToString());
@@ -45,6 +45,7 @@ namespace SimplyHelp.Controllers
                 var userName = HttpContext.Session.GetString("userName");
                 var userId = HttpContext.Session.GetString("userId");
                 var userRole = HttpContext.Session.GetString("userRole");
+
                 if (userdetails.IdRole == 1)
                 {
                     return RedirectToAction("Index", "Admin");
@@ -61,12 +62,18 @@ namespace SimplyHelp.Controllers
             else
             {
                 return View("Index");
-            }
-            
+            }            
         }
+        // registration Page load
+        public IActionResult Registration()
+        {
+            ViewData["Message"] = "Registration Page";
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Registar(RegistrationUserViewModel model)
+        public IActionResult Registration(Users model)
         {
             if (ModelState.IsValid)
             {
@@ -77,20 +84,14 @@ namespace SimplyHelp.Controllers
                     Password = model.Password,
                     IdRole = 3
                 };
-                _context.Add(user);
-                await _context.SaveChangesAsync();
+                _context.Users.Add(user);
+                _context.SaveChanges();
             }
             else
             {
-                return View("Registration");
+                return View(model);
             }
-            return RedirectToAction("Index", "Account");
-        }
-
-        // registration Page load
-        public IActionResult Registration()
-        {
-            ViewData["Message"] = "Registration Page";
+            ModelState.Clear();
             return View();
         }
 
@@ -112,7 +113,6 @@ namespace SimplyHelp.Controllers
             {
                 Debug.WriteLine("TempDataMessage Error");
             }
-
         }
     }
 }

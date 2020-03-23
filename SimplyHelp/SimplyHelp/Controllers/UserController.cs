@@ -19,60 +19,34 @@ namespace SimplyHelp.Controllers
     public class UserController : Controller
     {
         public IConfiguration Configuration { get; }
-        public UserController(IConfiguration configuration)
+        private readonly SimplyHelpContext _context;
+        public IEnumerable<UserMembers> UserMemberList { get; set; }
+        public IEnumerable<PlacesGeo> PlacesGeoList { get; set; }
+        public IEnumerable<UserGeo> UserGeoList { get; set; }
+        public string UserMemberssList { get; set; }
+        public UserController(IConfiguration configuration, SimplyHelpContext context)
         {
             Configuration = configuration;
+            _context = context;
         }
 
         public IActionResult Index()
-        {            
-            
-            List<MembersTableViewModel> memLst = null;
-            List<PlacesGeoModel> placesLocation = null;
-
-
+        {   
             int UserIDMembers = Convert.ToInt32(TempData["UserId"]);
             //On a class user HttpContext
             var userId = Convert.ToInt32(HttpContext.Session.GetString("userId"));
             var userName = HttpContext.Session.GetString("userName");
 
-            using (SimplyHelpContext db = new SimplyHelpContext())
-            {
-                memLst = (from d in db.UserMembers
-                             where d.UserId == userId
-                                orderby d.Id
-                             select new MembersTableViewModel
-                             {
-                                 Fullname = d.FullName,
-                                 PhoneNumber = d.PhoneNumber,
-                                 Email = d.Email,
-                                 ZipCode = d.ZipCode
-                             }).ToList();
-            }
-
-            using (SimplyHelpContext db = new SimplyHelpContext())
-            {
-                placesLocation = (from d in db.PlacesGeo
-                                  where d.UserId == userId
-                                  orderby d.PlaceType
-                                  select new PlacesGeoModel
-                                  {
-                                      PlaceName = d.PlaceName,
-                                      PlaceVicinity = d.PlaceVicinity,
-                                      PlaceType = d.PlaceType
-                                  }).Distinct().ToList();
-            }
-            
-            ViewBag.ListMemb = memLst;
-            ViewBag.ListLocation = placesLocation;
-
-            //RedirectToAction("Edit");
+            UserMemberList = _context.UserMembers.Where(d => d.UserId == userId).OrderBy(d => d.Id).ToList();
+            PlacesGeoList = _context.PlacesGeo.Where(d => d.UserId == userId).GroupBy(d => new { d.PlaceName, d.PlaceType, d.PlaceVicinity}).Select(d => d.First()).ToList(); 
+            ViewBag.ListMemb = UserMemberList;           
+            ViewBag.ListLocation = PlacesGeoList;
 
             return View();
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit([Bind("FullName, Latitude,Longitude")] [FromBody]UserMembersView model)
         {
             var userId = Convert.ToInt32(HttpContext.Session.GetString("userId"));
@@ -82,38 +56,22 @@ namespace SimplyHelp.Controllers
             {
                 return View(model);
             }
-            using (SimplyHelpContext db = new SimplyHelpContext())
+
+            UserGeoList = _context.UserGeo.Where(d => d.Userid == userId).GroupBy(d => new { d.Latitude, d.Longitude }).Select(d => d.First()).ToList();
+            UserMemberssList = _context.UserMembers.Where(x => x.FullName == userName).Select(x => x.FullName).ToString();
+
+            if (!String.IsNullOrEmpty(UserMemberssList))
             {
-                var lastLoca = db.UserGeo
-                    .Where(x => x.Userid == userId)
-                    .OrderByDescending(x => x.Userid)
-                    .FirstOrDefault();
-
-                string locMembers = db.UserMembers
-                    .Where(x => x.FullName == userName)
-                    .Select(x => x.FullName)
-                    .FirstOrDefault();
-
-                //lastLoc = (from d in db.UserGeo
-                //           where d.Id = 
-                //           select new GeoLocation
-                //           {
-                //               UserId = d.Userid,
-                //               Latitude = d.Latitude,
-                //               Longitude = d.Longitude
-                //           })
-
-                //lastLoc.Add(lastLoca);
-                if (!String.IsNullOrEmpty(locMembers))
+                if (UserGeoList != null)                
                 {
-                    if (lastLoca != null)
-                    {
-                        string myDb1ConnectionString = Configuration.GetConnectionString("DevConnection");
+                    string myDb1ConnectionString = Configuration.GetConnectionString("DevConnection");
 
+                    foreach (var item in UserGeoList)
+                    {
                         using (SqlConnection connection = new SqlConnection(myDb1ConnectionString))
                         {
-                            string sql = $@"Update UserMembers set latitude = '{lastLoca.Latitude}', longitude = '{lastLoca.Longitude}' 
-                                            Where fullName like '{userName}'"; 
+                            string sql = $@"Update UserMembers set latitude = '{item.Latitude}', longitude = '{item.Longitude}' 
+                                            Where fullName like '{userName}'";
                             using (SqlCommand command = new SqlCommand(sql, connection))
                             {
                                 command.CommandType = CommandType.Text;
@@ -121,114 +79,63 @@ namespace SimplyHelp.Controllers
                                 command.ExecuteNonQuery();
                                 connection.Close();
                             }
-                        }                           
+                        }
                     }
                 }
-            }
+            }            
             return Content("1");
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public IActionResult Add([FromBody]GeoLocation model)
+        [ValidateAntiForgeryToken]
+        public IActionResult Add([FromBody]UserGeo model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-            using (SimplyHelpContext db = new SimplyHelpContext())
-            {
-                UserGeo oGeoLoc = new UserGeo();
-                oGeoLoc.Userid = model.UserId;
-                oGeoLoc.Latitude = model.Latitude;
-                oGeoLoc.Longitude = model.Longitude;
-                oGeoLoc.DateAdded = model.DateAdded;
-
-                db.UserGeo.Add(oGeoLoc);
-                db.SaveChanges();
-
-            }
+            _context.UserGeo.Add(model);
+            _context.SaveChanges();
             ModelState.Clear();
-            return Content("1");
-            //return View("Index");
+            return Content("1");           
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public IActionResult AddPlaces([FromBody]PlacesGeoModel model)
+        [ValidateAntiForgeryToken]
+        public IActionResult AddPlaces([FromBody]PlacesGeo model)
         {
-            int UserIDMembers = Convert.ToInt32(TempData["UserId"]);
+            //int UserIDMembers = Convert.ToInt32(TempData["UserId"]);
             var userId = Convert.ToInt32(HttpContext.Session.GetString("userId"));
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }
-
-            using (SimplyHelpContext db = new SimplyHelpContext())
-            {
-                PlacesGeo oPlacesGeo = new PlacesGeo();
-                oPlacesGeo.UserId = model.UserId;
-                oPlacesGeo.PlaceLat = model.PlaceLat;
-                oPlacesGeo.PlaceLon = model.PlaceLon;
-                oPlacesGeo.PlaceName = model.PlaceName;
-                oPlacesGeo.PlaceType = model.PlaceType;
-                oPlacesGeo.PlaceVicinity = model.PlaceVicinity;
-
-                db.PlacesGeo.Add(oPlacesGeo);
-                db.SaveChanges();
-
-            }
+            }            
+            _context.PlacesGeo.Add(model);
+            _context.SaveChanges();
             ModelState.Clear();
-            //return Ok();
             return Content("1");
-            //return View("Index");
         }
-        public IActionResult UserMembers(MembersViewModel model)
+        public IActionResult UserMembers(UserMembers model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            using (SimplyHelpContext db = new SimplyHelpContext())
-            {
-                UserMembers oUserMembers = new UserMembers();
-                oUserMembers.Id = model.Id;
-                oUserMembers.UserId = model.UserId;
-                oUserMembers.FullName = model.FullName;
-                oUserMembers.PhoneNumber = model.PhoneNumber;
-                oUserMembers.Email = model.Email;
-                oUserMembers.ZipCode = model.ZipCode;
-
-                db.UserMembers.Add(oUserMembers);
-                db.SaveChanges();
-            }
+            _context.UserMembers.Add(model);
+            _context.SaveChanges();
             TempData["UserId"] = model.UserId;
             ModelState.Clear();
             return RedirectToAction("Index");
-            //return View("Index");
         }
 
         public IActionResult GetMembersLoc()
         {
             var userId = Convert.ToInt32(HttpContext.Session.GetString("userId"));
-            List<MembersViewModel> memGeoLst = null;
-            using (SimplyHelpContext db = new SimplyHelpContext())
-            {
-                memGeoLst = (from d in db.UserMembers
-                             where d.UserId == userId
-                             orderby d.Id
-                             select new MembersViewModel
-                             {
-                                 FullName = d.FullName,
-                                 Latitude = d.Latitude,
-                                 Longitude = d.Longitude
-                             }).ToList();
 
-                ViewBag.ListMembGeo = memGeoLst;
-            }
+            UserMemberList = _context.UserMembers.Where(d => d.UserId == userId).OrderBy(d => d.Id).ToList();
+            ViewBag.ListMembGeo = UserMemberList;
 
-            return Ok(memGeoLst);
+            return Ok(UserMemberList);
         }
     }
 }

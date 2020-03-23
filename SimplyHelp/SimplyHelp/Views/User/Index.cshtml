@@ -3,12 +3,11 @@
 
 @{
     ViewData["Title"] = "Index";
-
     var userId = Context.Session.GetString("userId");
-    var userName = Context.Session.GetString("userName");
-    //var userRole = Context.Session.GetString("userRole");
-    List<SimplyHelp.Models.TableViewModel.MembersTableViewModel> lstMembersAll = null;
-    List<SimplyHelp.Models.ViewModel.PlacesGeoModel> lstPlacesLoc = null;
+    var userName = Context.Session.GetString("userName");  
+
+    IEnumerable<UserMembers> lstMembersAll = null;
+    IEnumerable<PlacesGeo> lstPlacesLoc = null;
 
     if (ViewBag.ListMemb == null)
     {
@@ -36,6 +35,7 @@
                    data-send-loc="@Url.Content("~/User/Add")" data-back-index="@Url.Content("~/User/")" />
         </div>
     </div>
+    @*Members table*@
     <div class="col-md-12">
         <div class="col-md-12 col-sm-12">
             <div class="table-responsive col-md-12 divwdBigger">
@@ -54,7 +54,7 @@
                             @foreach (var oElement in lstMembersAll)
                             {
                                 <tr>
-                                    <td>@oElement.Fullname</td>
+                                    <td>@oElement.FullName</td>
                                     <td>@oElement.PhoneNumber</td>
                                     <td>@oElement.Email</td>
                                     <td>@oElement.ZipCode</td>
@@ -65,6 +65,7 @@
                 }
             </div>
         </div>
+        @*Map section*@
         <div class="col-md-12 col-sm-12 col-md-offset-4 col-sm-offset-3 col-xs-offset-1">
             <div id="map" style="height:350px; width:350px;"
                  data-map-url="@Url.Content("~/User/GetMembersLoc")"
@@ -73,6 +74,8 @@
                  data-user-id="@userId"></div>
         </div>
         <div id="myList"></div>
+
+        @*Emergency Places*@        
         <div class="col-md-12 col-sm-12">
             <p class="col-md-offset-3"><span class="pLabel">Emergency Places near you</span></p>
             <div class="table-responsive col-md-12">
@@ -105,8 +108,6 @@
     </div>
     <p id="output"></p>
 </div>
-
-
 <!-- Modal -->
 <div class="modal fade" id="modalMembers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -127,19 +128,12 @@
         </div>
     </div>
 </div>
-
-@*<button id="find-me">Show my location</button>*@
-
 <p id="status"></p>
-@*<a id="map-link" target="_blank"></a>*@
-
-
-@*<button id="reset">Reset</button>*@
-@*<div id="counter"></div>*@
 
 @section Scripts{
     <script src="~/js/site.js"></script>
-    <!--Maps-->
+    @*alwas add Key*@
+    <!--Maps-->    
     <script src="https://maps.googleapis.com/maps/api/js?key=YOURKEY&callback=initMap&libraries=places"
             async defer></script>
 }
@@ -150,4 +144,3 @@
         tablePerPage();
     }
 </script>
-
