@@ -9,7 +9,7 @@ CREATE DATABASE [SimplyHelp]
 USE [SimplyHelp]
 GO
 
-/****** Object:  Table [dbo].[Role]    Script Date: 2/3/2020 9:25:39 PM ******/
+/****** Object:  Table [dbo].[Role]    Script Date: 3/23/2020 12:31:00 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -22,7 +22,7 @@ CREATE TABLE [dbo].[Role](
  CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
@@ -30,7 +30,7 @@ GO
 USE [SimplyHelp]
 GO
 
-/****** Object:  Table [dbo].[Permissions]    Script Date: 2/3/2020 9:25:17 PM ******/
+/****** Object:  Table [dbo].[Permissions]    Script Date: 3/23/2020 12:32:44 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -44,15 +44,15 @@ CREATE TABLE [dbo].[Permissions](
  CONSTRAINT [PK_Permissions] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
-/* tblSubscription */
+/* Create tblSubscription */
 USE [SimplyHelp]
 GO
 
-/****** Object:  Table [dbo].[tblSubscription]    Script Date: 3/12/2020 12:04:00 PM ******/
+/****** Object:  Table [dbo].[tblSubscription]    Script Date: 3/23/2020 12:33:25 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -79,14 +79,11 @@ CREATE TABLE [dbo].[tblSubscription](
 ) ON [PRIMARY]
 GO
 
-
-
-
 /* Role_Permission */
 USE [SimplyHelp]
 GO
 
-/****** Object:  Table [dbo].[Role_Permission]    Script Date: 2/3/2020 9:27:27 PM ******/
+/****** Object:  Table [dbo].[Role_Permission]    Script Date: 3/23/2020 12:33:59 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -100,7 +97,7 @@ CREATE TABLE [dbo].[Role_Permission](
  CONSTRAINT [PK_Role_Permission] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
@@ -118,11 +115,11 @@ GO
 ALTER TABLE [dbo].[Role_Permission] CHECK CONSTRAINT [FK_Role_Permission_Role]
 GO
 
-/* users */
+/* Create users table */
 USE [SimplyHelp]
 GO
 
-/****** Object:  Table [dbo].[users]    Script Date: 2/3/2020 9:28:17 PM ******/
+/****** Object:  Table [dbo].[users]    Script Date: 3/23/2020 12:34:52 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -139,7 +136,7 @@ CREATE TABLE [dbo].[users](
  CONSTRAINT [PK_users] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
@@ -150,11 +147,11 @@ GO
 ALTER TABLE [dbo].[users] CHECK CONSTRAINT [FK_users_Role]
 GO
 
-/* userGeo */
+/* Create userGeo table */
 USE [SimplyHelp]
 GO
 
-/****** Object:  Table [dbo].[userGeo]    Script Date: 2/3/2020 9:28:48 PM ******/
+/****** Object:  Table [dbo].[userGeo]    Script Date: 3/23/2020 12:35:10 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -170,7 +167,7 @@ CREATE TABLE [dbo].[userGeo](
  CONSTRAINT [PK_userGeo] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
@@ -178,7 +175,7 @@ GO
 USE [SimplyHelp]
 GO
 
-/****** Object:  Table [dbo].[UserMembers]    Script Date: 2/6/2020 1:29:20 AM ******/
+/****** Object:  Table [dbo].[UserMembers]    Script Date: 3/23/2020 12:35:42 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -197,14 +194,15 @@ CREATE TABLE [dbo].[UserMembers](
  CONSTRAINT [PK_UserMembers] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
+/* Create Carrier Table */
 USE [SimplyHelp]
 GO
 
-/****** Object:  Table [dbo].[Carrier]    Script Date: 3/12/2020 10:55:31 AM ******/
+/****** Object:  Table [dbo].[Carrier]    Script Date: 3/23/2020 12:36:31 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -222,9 +220,85 @@ CREATE TABLE [dbo].[Carrier](
 ) ON [PRIMARY]
 GO
 
+/* Create Disaster */
+USE [SimplyHelp]
+GO
+
+/****** Object:  Table [dbo].[Disaster]    Script Date: 3/23/2020 12:38:21 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Disaster](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[DisasterName] [varchar](50) NOT NULL,
+ CONSTRAINT [PK_Disaster] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 
 
+/* Create AlertType */
+USE [SimplyHelp]
+GO
 
+/****** Object:  Table [dbo].[AlertType]    Script Date: 3/23/2020 12:38:53 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[AlertType](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[AlertTypeName] [varchar](50) NOT NULL,
+	[id_Disaster] [int] NOT NULL,
+ CONSTRAINT [PK_AlertType] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[AlertType]  WITH CHECK ADD  CONSTRAINT [FK_AlertType_Disaster] FOREIGN KEY([id_Disaster])
+REFERENCES [dbo].[Disaster] ([Id])
+GO
+
+ALTER TABLE [dbo].[AlertType] CHECK CONSTRAINT [FK_AlertType_Disaster]
+GO
+
+/* Create AlertMessage */
+USE [SimplyHelp]
+GO
+
+/****** Object:  Table [dbo].[AlertMessage]    Script Date: 3/23/2020 12:39:21 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[AlertMessage](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[AlertMessageName] [varchar](100) NOT NULL,
+	[id_AlertType] [int] NOT NULL,
+ CONSTRAINT [PK_AlertMessage] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[AlertMessage]  WITH CHECK ADD  CONSTRAINT [FK_AlertMessage_AlertType] FOREIGN KEY([id_AlertType])
+REFERENCES [dbo].[AlertType] ([id])
+GO
+
+ALTER TABLE [dbo].[AlertMessage] CHECK CONSTRAINT [FK_AlertMessage_AlertType]
+GO
 
 
 
