@@ -1,17 +1,21 @@
-﻿@{
+@{
     ViewData["Title"] = "Contact";
 }
-<h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
+<!--Rebekah 3/27/2020: added container class, since container class was taken away from the body in the _Layout.cshtml file-->
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+    <div class="row text-center">
+        <img class="contact-img" alt="contact" src="~/images/contactus.png">
+        <br />
+        <address>
+            University of South Florida<br />
+            Tampa, FL 33620<br />
+            <strong>Phone:</strong>
+            000-000-0000
+        </address>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
-
-<address>
-    <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+        <address>
+            <strong>Support:</strong> <a href="mailto:Support@example.com">Support@SimplyHelp.com</a><br />
+        </address>
+    </div>
+</div>
