@@ -1,102 +1,153 @@
-﻿
+
 @{
     ViewData["Title"] = "SimplyHelp Home";
 }
 
-<div class="col-md-12 index-Message">        
-    <h3 >During a disaster people tend to look for aid but do not know where to look and apply.
-    <br><br>
-        This website helps the victims of a disaster search for organizations that are providing assistance whether it’s financial, food or shelter. The site will have links to the agencies website where the victims would be able to access and request the aid they are in need of.
-    </h3>
-</div>
-<br />
-<div class="col-md-12">
-    <div class="col-md-4 col-sm-4">
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="~/images/fema-logo-blue.svg" alt="Card image cap">
-            <div class="card-body">
-                <p class="card-text">FEMA provide assistance during and after disasters. FEMA will direct the disaster victims to
-                the resources from the disasterassitance.gov site.</p>
-            </div>
-        </div>
+@*<h2>@ViewData["Title"]</h2>*@
+
+<!--Rebekah 3/27/2020: changed it from the alert class, to the jumbotron class-->
+<section class="jumbotron-home text-center">
+    <div class="container">
+        <img src="~/images/sh6.png" />
+        <hr />
+        <p class="header-jumbo"> During a disaster people tend to look for aid but do not know where to look and apply.</h1>
+        <p class="lead text-muted">
+            This website helps the victims of a disaster search for organizations that are providing assistance whether it’s financial, food or shelter.
+            The site will have links to the agencies website where the victims would be able to access and request the aid they are in need of.
+        </p>
+        <p>
+            <a href="#" class="btn btn-primary">Learn More</a>
+        </p>
     </div>
-    <div class="col-md-4 col-sm-4">
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="~/images/daip-logo.png" alt="Card image cap" width="250px;">
-            <div class="card-body">
-                <p class="card-text">DisasterAssistance.gov works in conjunction with FEMA (FEMA is a managing partner) this site will provide 
-                information on where to get assistance, apply for aid and check the status of an aid assistance application. It will also direct 
-                you to other sites where you can get help for business, local government or community.</p>
+</section>
+
+<!--Rebekah 3/27/2020: added container class, since container class was taken away from the body in the _Layout.cshtml file-->
+<div class="container">
+    <div class="row display-flex">
+        <div class="col-sm-6 col-md-4 col-pad">
+            <!--Rebekah 3/27/2020: col-pad class is to add padding between columns for the thumbnails-->
+            <div class="thumbnail">
+                <!--Rebekah 3/27/2020: used thumbnail class instead of the card class-->
+                <img src="~/images/fema.png" alt="...">
+                <div class="caption">
+                    <h3>Federal Emergency Management Agency</h3>
+                    <p>
+                        FEMA provide assistance during and after disasters. FEMA will direct the disaster victims to
+                        the resources from the disasterassitance.gov site.
+                    </p>
+                    <p><a href="https://www.fema.gov/contact-us" target="_blank" class="btn btn-primary" role="button">Learn More</a> </p>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4 col-sm-4">
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="~/images/Logo_USAGov.png" alt="Card image cap" width="100px;">
-            <div class="card-body">
-                <p class="card-text">This site helps direct the victims of a disaster to other resources where they can get 
-                emergency financial assistance from the government such as D-SNAP, Disaster unemployment, Emergency utility assistance, etc.</p>
+
+        <div class="col-sm-6 col-md-4 col-pad">
+            <div class="thumbnail">
+                <img src="~/images/disaster.png" alt="...">
+                <div class="caption">
+                    <h3>Disaster Assistance Improvement Program</h3>
+                    <p>
+                        DisasterAssistance.gov works in conjunction with FEMA (FEMA is a managing partner) this site will provide
+                        information on where to get assistance, apply for aid and check the status of an aid assistance application. It will also direct
+                        you to other sites where you can get help for business, local government or community.
+                    </p>
+                    <p><a href="https://www.disasterassistance.gov/" target="_blank" class="btn btn-primary" role="button">Learn More</a> </p>
+                </div>
             </div>
         </div>
-    </div>    
-</div>
-<div class="col-md-12">
-    <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="~/images/redcross-logo.png" alt="Card image cap">
-            <div class="card-body">
-                <p class="card-text">The American Red Cross provides shelter, food, health and mental health services 
-                (Psychological First Aid) to assist with people fundamental needs so they can continue their day-to-day activities</p>
+
+        <div class="col-sm-6 col-md-4 col-pad">
+            <div class="thumbnail">
+                <img src="~/images/usagov.png" alt="...">
+                <div class="caption">
+                    <h3>USAGov</h3>
+                    <p>
+                        This site helps direct the victims of a disaster to other resources where they can get
+                        emergency financial assistance from the government such as D-SNAP, Disaster unemployment, Emergency utility assistance, etc.
+                    </p>
+                    <p><a href="https://www.usa.gov/disaster-financial-help" target="_blank" class="btn btn-primary" role="button">Learn More</a> </p>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="~/images/salvationshield.svg" alt="Card image cap" width="100px;">
-            <div class="card-body">
-                <p class="card-text">The organization provides food, water, and shelter to disaster victims, help with cleanup, and help the 
-                victims get in touch with their family members. With your zip code, the site will direct you to your local Salvation Army.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="~/images/bg_logo_400.png" alt="Card image cap" width="250px;">
-            <div class="card-body">
-                <p class="card-text">The site is managed by the Department of the Treasury. This site directs you to apply to a program that is based on a Special tax 
-                law provisions that could help taxpayers and businesses that have been affected by a disaster recover financially.</p>
-            </div>
-        </div>
-    </div>
-    
-</div>
-<div class="col-md-12">
-    <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="~/images/ccusa_logo.svg" alt="Card image cap" width="250px;">
-            <div class="card-body">
-                <p class="card-text">The organization helps aid those recovering from a disaster. With your zip code it will direct you to the local catholic charity location.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="~/images/HUD-HEADER-opensans.jpg" alt="Card image cap" width="250px;">
-            <div class="card-body">
-                <p class="card-text">Housing and Urban Development (HUD) has a variety of resources such as FHA Homeowners Disaster relief, Active Disaster Grants, Individual Disaster Assistance.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="~/images/logo-color-2.png" alt="Card image cap" width="250px;">
-            <div class="card-body">
-                <p class="card-text">Americares provide assistance worldwide to victims affected by disaster with medicine, medical supplies and health programs. 
-                   Their Clinical Services supply excellent health care for the people who do not have any.</p>
-            </div>
-        </div>
-    </div>
-</div>
 
 
+        <div class="col-sm-6 col-md-4 col-pad">
+            <div class="thumbnail">
+                <img src="~/images/redcross.png" alt="...">
+                <div class="caption">
+                    <h3>American Red Cross</h3>
+                    <p>
+                        The American Red Cross provides shelter, food, health and mental health services
+                        (Psychological First Aid) to assist with people fundamental needs so they can continue their day-to-day activities
+                    </p>
+                    <p><a href="https://www.redcross.org/get-help.html" target="_blank" class="btn btn-primary" role="button">Learn More</a> </p>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-sm-6 col-md-4 col-pad">
+            <div class="thumbnail">
+                <img src="~/images/salvation.png" alt="...">
+                <div class="caption">
+                    <h3>The Salvation Army</h3>
+                    <p>
+                        The organization provides food, water, and shelter to disaster victims, help with cleanup, and help the
+                        victims get in touch with their family members. With your zip code, the site will direct you to your local Salvation Army.
+                    </p>
+                    <p><a href="https://www.salvationarmyusa.org/usn/contact/" target="_blank" class="btn btn-primary" role="button">Learn More</a> </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4 col-pad">
+            <div class="thumbnail">
+                <img src="~/images/benefits.png" alt="...">
+                <div class="caption">
+                    <h3>Benefits.gov</h3>
+                    <p>
+                        The site is managed by the Department of the Treasury. This site directs you to apply to a program that is based on a Special tax
+                        law provisions that could help taxpayers and businesses that have been affected by a disaster recover financially.
+                    </p>
+                    <p><a href="https://www.benefits.gov/benefit/4418" target="_blank" class="btn btn-primary" role="button">Learn More</a> </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4 col-pad">
+            <div class="thumbnail">
+                <img src="~/images/ccusa.png" alt="...">
+                <div class="caption">
+                    <h3>Catholic Charities USA</h3>
+                    <p>The organization helps aid those recovering from a disaster. With your zip code it will direct you to the local catholic charity location.</p>
+                    <p><a href="https://www.catholiccharitiesusa.org/find-help/" target="_blank" class="btn btn-primary" role="button">Learn More</a> </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4 col-pad">
+            <div class="thumbnail">
+                <img src="~/images/hud.png" alt="...">
+                <div class="caption">
+                    <h3>United States Department of Housing and Urban Development</h3>
+                    <p>
+                        Housing and Urban Development (HUD) has a variety of resources such as FHA Homeowners Disaster relief, Active Disaster Grants, Individual Disaster Assistance.
+                    </p>
+                    <p><a href="https://www.hud.gov/info/disasterresources" target="_blank" class="btn btn-primary" role="button">Learn More</a> </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-4 col-pad">
+            <div class="thumbnail">
+                <img src="~/images/americares.png" alt="...">
+                <div class="caption">
+                    <h3>Americares</h3>
+                    <p>
+                        Americares provide assistance worldwide to victims affected by disaster with medicine, medical supplies and health programs.
+                        Their Clinical Services supply excellent health care for the people who do not have any.
+                    </p>
+                    <p><a href="https://www.americares.org/contact-us/" target="_blank" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
